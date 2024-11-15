@@ -14,6 +14,7 @@ class TransactionsHistory extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const Text(
               'Histórico de transações',

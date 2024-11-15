@@ -1,8 +1,13 @@
+import 'package:finance_app/src/presentation/components/chart_bar_animated.dart';
+import 'package:finance_app/src/presentation/widgets/buyer_history/buyer_history.dart';
 import 'package:finance_app/src/presentation/widgets/side_bar_view/side_bar_view_mobile/side_bar_view_mobile.dart';
+import 'package:finance_app/src/presentation/widgets/statistics_tile/statistics_tile.dart';
 import 'package:finance_app/src/presentation/widgets/transactions_history/transactions_history.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sidebarx/sidebarx.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 class MobileView extends StatelessWidget {
   final SidebarXController controller;
@@ -19,44 +24,86 @@ class MobileView extends StatelessWidget {
         backgroundColor: Colors.grey.shade200,
         actions: [
           IconButton(
-              onPressed: () {},
-              icon: const FaIcon(FontAwesomeIcons.magnifyingGlass)),
+            onPressed: () {},
+            icon: const FaIcon(FontAwesomeIcons.magnifyingGlass),
+          ),
+          SizedBox(width: 12.h),
           IconButton(
-              onPressed: () {}, icon: const FaIcon(FontAwesomeIcons.bell)),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: ClipOval(
-              child: Image.network(
-                  width: MediaQuery.of(context).size.width * .09,
-                  'https://s3-alpha-sig.figma.com/img/b423/f6cd/fd23c1541eb2e50895202b33e5e4bfed?Expires=1732492800&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=R-fjM669ZfEbF2R7v1kjiIc4a5LPj5B8oE88VdWmc9kwGh8OHAxSTmw8C~B0LhGF9Yn-HMf92U~ENB3Gx7dKQmRGVOPXsoyUdrNvX--jCYw2NtFP5aSGLf~3d5Kjy8i16UHESdoCmRD1gVjQTo4snQa2u1nu2BsFdbCXuMxks5UREat-KmF3PqPq3btmXyZ~S2uCimroTjypCdr9yVbHcZvcHpdlFiKGRH0-E9LJzs-daaPzFuA00VU7C-D4INlnt5yqyPMeTywVvmmm2iFxnY2JZP49dW41s2YouLCGvkuRcIb7pVytw0Q2wG1VMurQZKRZL6kWJeYbKnNoJHNtcQ__'),
+            onPressed: () {},
+            icon: const FaIcon(FontAwesomeIcons.bell),
+          ),
+          SizedBox(width: 12.h),
+          ClipOval(
+            child: Image.network(
+              height: 40,
+              'https://images.ctfassets.net/h6goo9gw1hh6/2sNZtFAWOdP1lmQ33VwRN3/24e953b920a9cd0ff2e1d587742a2472/1-intro-photo-final.jpg?w=1200&h=992&fl=progressive&q=70&fm=jpg',
             ),
-          )
+          ),
+          SizedBox(width: 12.h),
         ],
       ),
       drawer: SideBarViewMobile(controller: controller),
       body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+        padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 15.w),
         child: SingleChildScrollView(
-          child: Column(
-            children: [
-              const Text(
-                'Olá, João!',
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 22,
+          child: AnimationLimiter(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: AnimationConfiguration.toStaggeredList(
+                duration: const Duration(milliseconds: 1000),
+                childAnimationBuilder: (widget) => SlideAnimation(
+                  horizontalOffset: 50.0,
+                  child: FadeInAnimation(child: widget),
                 ),
-              ),
-              const Center(
-                child: Text(
-                  'Aqui estão as informações sobre suas vendas.',
-                  style: TextStyle(
-                    fontSize: 15,
+                children: [
+                  Text(
+                    'Olá, João!',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 22.sp,
+                    ),
                   ),
-                ),
+                  Center(
+                    child: Text(
+                      'Aqui estão as informações sobre suas vendas.',
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20.h),
+                  const TransactionsHistory(),
+                  SizedBox(height: 20.h),
+                  ChartBarAnimated(),
+                  SizedBox(height: 20.h),
+                  StatisticsTile(
+                    title: 'Total de Vendas',
+                    value: '3.675,00',
+                    percentage: 15,
+                  ),
+                  SizedBox(height: 20.h),
+                  StatisticsTile(
+                    title: 'Total Líquido',
+                    value: '3.675,00',
+                    percentage: 11,
+                  ),
+                  SizedBox(height: 20.h),
+                  StatisticsTile(
+                    title: 'Compras canceladas',
+                    value: '130,00',
+                    percentage: -80,
+                  ),
+                  SizedBox(height: 20.h),
+                  StatisticsTile(
+                    title: 'Reembolsos',
+                    value: '345,00',
+                    percentage: -78,
+                  ),
+                  SizedBox(height: 20.h),
+                  const BuyerHistory(),
+                ],
               ),
-              const SizedBox(height: 20),
-              const TransactionsHistory(),
-            ],
+            ),
           ),
         ),
       ),

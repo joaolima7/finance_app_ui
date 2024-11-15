@@ -13,11 +13,9 @@ class HomeScreen extends StatelessWidget {
     SidebarXController _controller =
         SidebarXController(selectedIndex: 0, extended: true);
     return ScreenTypeLayout.builder(
-      mobile: (context) => MobileView(
-        controller: _controller,
-      ),
-      tablet: (context) => const TabletView(),
-      desktop: (context) => const DesktopView(),
+      mobile: (context) => MobileView(controller: _controller),
+      tablet: (context) => TabletView(controller: _controller),
+      desktop: (context) => DesktopView(controller: _controller),
     );
   }
 }
